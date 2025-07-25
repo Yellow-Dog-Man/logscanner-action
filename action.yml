@@ -1,0 +1,37 @@
+name: Resonite Log Scanner
+description: A Resonite GitHub Action that scans log files
+
+inputs:
+  reminder-message:
+    description: Message to send when logs aren't present
+    required: false
+    default: |
+      Hi! Thank you for reporting this bug on the Resonite issue tracker.
+
+      We noticed you haven't attached a proper log file in your report.
+      Including a log helps us pinpoint the exact issue which is why it is required during the report process.
+
+      If you do not know where to find log files, please [see this tutorial on the Resonite Wiki](https://wiki.resonite.com/Log_Files#Regular_Log_Files) to see where to find them.
+
+      Thank you!
+  modded-message:
+    description: Message to show when logs are modded
+    required: false
+    default: |
+      Hi! Thank you for reporting this bug on the Resonite issue tracker.
+
+      We noticed your logs show that you are running mods.
+      Unfortunately, we require bugs to be reported with clean logs only using the base client.
+      Please disable any mod loader or plugins you might have.
+
+      Thank you!
+  github-token:
+    description: GitHub token
+    required: true
+    default: ''
+
+outputs:
+
+runs:
+  using: node20
+  main: dist/index.js

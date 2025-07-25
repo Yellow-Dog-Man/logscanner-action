@@ -1,0 +1,29 @@
+{
+  "name": "logscanner-action",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "rollup --config rollup.config.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Yellow-Dog-Man/logscanner-action.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Yellow-Dog-Man/logscanner-action/issues"
+  },
+  "homepage": "https://github.com/Yellow-Dog-Man/logscanner-action#readme",
+  "description": "",
+  "dependencies": {
+    "@actions/core": "^1.11.1",
+    "@actions/github": "^6.0.1"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^28.0.6",
+    "@rollup/plugin-node-resolve": "^16.0.1",
+    "rollup": "^4.45.1"
+  }
+}
