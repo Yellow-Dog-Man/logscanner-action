@@ -2,6 +2,8 @@
 
 This action checks for and scans Resonite logs for mods, and other things.
 
+[Example of a bad issue.](https://github.com/Yellow-Dog-Man/Resonite-Issues/issues/4996)
+
 ## Inputs
 
 ### `github-token`
