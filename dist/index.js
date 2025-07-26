@@ -31469,13 +31469,17 @@ async function run() {
                 }
             } else {
                 const logUrls = Array.from(
-                    logField.matchAll(/https?:\/\/[^\s)]+?\.log\b/gi),
+                    logField.matchAll(/https?:\/\/[^\s)]+?\.log\b/),
                     m => m[0]
                 );
 
-                let message = 'Hello! Here are the results of the automated log parsing:\n\ŋ';
+                let message = 'Hello! Here are the results of the automated log parsing:\n\n';
+
+                coreExports.warning(logUrls);
 
                 for (const url of logUrls) {
+                    coreExports.warning(`Download: ${url}`);
+
                     try {
                         const response = await fetch(url);
                         if (!response.ok) throw new Error("Failed to fetch logs.");
