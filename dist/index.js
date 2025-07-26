@@ -31241,6 +31241,11 @@ function requireGithub () {
 
 var githubExports = requireGithub();
 
+const {
+    parseResoniteLogContent,
+    getSystemSummary,
+} = require('./resonite-log-content-parser');
+
 async function run() {
     try {
         const token = coreExports.getInput("github-token", { required: true });
@@ -31279,9 +31284,37 @@ async function run() {
                         labels: ["needs more information"],
                     });
                 }
+            } else {
+                const logUrls = Array.from(
+                    logField.matchAll(/https?:\/\/[^\s)]+?\.log\b/gi),
+                    m => m[0]
+                );
+
+                let message = 'Hello! Here are the results of the automated log parsing:\n\ŋ';
+
+                for (const url of logUrls) {
+                    try {
+                        const response = await fetch(url);
+                        if (!response.ok) throw new Error("Failed to fetch logs.");
+                        const content = await response.text();
+
+                        parsedLog = parseResoniteLogContent(content);
+
+                        message += getSystemSummary(parsedLog);
+                    } catch (e) {
+                        coreExports.warning("Unable to download some of the logs, results may be incomplete.");
+                    }
+                }
+
+                message += "\n\nThis message has been auto-generated using [logscanner](https://github.com/Yellow-Dog-Man/logscanner-action).";
+
+                await octkit.rest.issues.createComment({
+                    owner,
+                    repo,
+                    issue_number,
+                    body: message,
+                });
             }
-        } else {
-            /// TODO: analyse logs for mods
         }
     } catch (error) {
         coreExports.setFailed(error.message);
