@@ -27,6 +27,7 @@ import require$$6 from 'string_decoder';
 import require$$0$9 from 'diagnostics_channel';
 import require$$2$3 from 'child_process';
 import require$$6$1 from 'timers';
+import { parseResoniteLogContent, getSystemSummary } from 'resonite-log-content-parser';
 
 var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
@@ -31240,11 +31241,6 @@ function requireGithub () {
 }
 
 var githubExports = requireGithub();
-
-const {
-    parseResoniteLogContent,
-    getSystemSummary,
-} = require('./resonite-log-content-parser');
 
 async function run() {
     try {
