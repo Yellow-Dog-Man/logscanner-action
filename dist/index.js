@@ -50434,7 +50434,7 @@ async function run() {
                             }
                         });
 
-                        parsedLog = parseResoniteLogContent(response.data);
+                        let parsedLog = parseResoniteLogContent(response.data);
 
                         message += getSystemSummary(parsedLog);
                     } catch (e) {
