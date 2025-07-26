@@ -39,9 +39,24 @@ async function run() {
                         labels: ["needs more information"],
                     });
                 }
+            } else {
+                const logUrls = Array.from(
+                    logField.matchAll(/https?:\/\/[^\s)]+?\.log\b/gi),
+                    m => m[0]
+                );
+
+                for (const url of logUrls) {
+                    try {
+                        const response = await fetch(url);
+                        if (!response.ok) throw new Error("Failed to fetch logs.");
+                        const content = await response.text();
+
+                        // TODO Process logs
+                    } catch (e) {
+                        core.warning("Unable to download some of the logs, results may be incomplete.");
+                    }
+                }
             }
-        } else {
-            /// TODO: analyse logs for mods
         }
     } catch (error) {
         core.setFailed(error.message);
