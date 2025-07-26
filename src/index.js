@@ -58,9 +58,9 @@ async function run() {
                             }
                         });
 
-                        core.warning(`response: ${response.status} ${response.data}`)
-
                         parsedLog = parseResoniteLogContent(content);
+
+                        core.warning(parsedLog)
 
                         message += getSystemSummary(parsedLog);
                     } catch (e) {
