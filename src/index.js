@@ -56,7 +56,11 @@ async function run() {
                     core.warning(`Download: ${url}`);
 
                     try {
-                        const response = await axios.get(url);
+                        const response = await axios.get(url, {
+                            headers: {
+                                Authorization: `Bearer ${token}`
+                            }
+                        });
 
                         core.warning(`response: ${response.status} ${response.data}`)
 

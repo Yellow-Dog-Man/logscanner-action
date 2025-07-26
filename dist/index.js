@@ -50244,7 +50244,11 @@ async function run() {
                     coreExports.warning(`Download: ${url}`);
 
                     try {
-                        const response = await axios.get(url);
+                        const response = await axios.get(url, {
+                            headers: {
+                                Authorization: `Bearer ${token}`
+                            }
+                        });
 
                         coreExports.warning(`response: ${response.status} ${response.data}`);
 
