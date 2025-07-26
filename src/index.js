@@ -42,7 +42,7 @@ async function run() {
                 }
             } else {
                 const logUrls = Array.from(
-                    logField.matchAll(/https?:\/\/[^\s)]+?\.log\b/gi),
+                    logField.matchAll(/https?:\/\/[^\s)]+?\.log\b/),
                     m => m[0]
                 );
 
