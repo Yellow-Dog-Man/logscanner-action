@@ -58,9 +58,7 @@ async function run() {
                             }
                         });
 
-                        parsedLog = parseResoniteLogContent(content);
-
-                        core.warning(parsedLog)
+                        parsedLog = parseResoniteLogContent(response.data);
 
                         message += getSystemSummary(parsedLog);
                     } catch (e) {
