@@ -170,20 +170,8 @@ export function parseResoniteLogContent(logContent) {
 }
 
 
-function isVRMode(headset) {
+export function isVRMode(headset) {
     return headset && !headset.includes('Screen');
-}
-
-
-export function getSystemSummary(parsedData) {
-    return {
-        cpu: parsedData.pcSpecs.cpu || 'Unknown',
-        gpu: parsedData.pcSpecs.gpu || 'Unknown',
-        os: parsedData.operatingSystem || 'Unknown',
-        version: parsedData.resoniteVersion || 'Unknown',
-        vrMode: isVRMode(parsedData.headset),
-        modded: parsedData.modLoader.isLoaded
-    };
 }
 
 export function isValidResoniteLog(logContent) {

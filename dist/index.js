@@ -50368,18 +50368,6 @@ function isVRMode(headset) {
     return headset && !headset.includes('Screen');
 }
 
-
-function getSystemSummary(parsedData) {
-    return {
-        cpu: parsedData.pcSpecs.cpu || 'Unknown',
-        gpu: parsedData.pcSpecs.gpu || 'Unknown',
-        os: parsedData.operatingSystem || 'Unknown',
-        version: parsedData.resoniteVersion || 'Unknown',
-        vrMode: isVRMode(parsedData.headset),
-        modded: parsedData.modLoader.isLoaded
-    };
-}
-
 async function run() {
     try {
         const token = coreExports.getInput("github-token", { required: true });
@@ -50435,12 +50423,12 @@ async function run() {
                         });
 
                         let parsedLog = parseResoniteLogContent(response.data);
-                        let systemSummary = getSystemSummary(parsedLog);
+                        let vrMode = isVRMode(parsedLog.headset);
 
-                        message += `Found logs for Resonite ${parsedLog.resoniteVersion}:\n- CPU: ${systemSummary.cpu}\n- GPU: ${systemSummary.gpu}\n- Headset: ${systemSummary.vrMode}\n`;
+                        message += `Found logs for Resonite ${parsedLog.resoniteVersion}:\n- OS: ${parsedLog.operatingSystem}\n- CPU: ${parsedLog.pcSpecs.cpu}\n- GPU: ${parsedLog.pcSpecs.gpu}\n- Memory: ${parsedLog.pcSpecs.memory}\n- VRAM: ${parsedLog.pcSpecs.vram}\n- Headset: ${vrMode}\n`;
 
-                        if (systemSummary.modded) {
-                            message += "> [!CAUTION]\n> We have detected a mod loader and/or plug-ins being loaded additionally to the base game. Please provide clean logs without mods and/or plug-ins to avoid reporting issues related to those.";
+                        if (parsedLog.modLoader.isLoaded) {
+                            message += "> [!CAUTION]\n> We have detected a mod loader and/or plug-ins being loaded additionally to the base game.\n> Please provide clean logs without mods and/or plug-ins to avoid reporting issues related to those.\n> If you have any questions about how we process reports, please see the [Resonite Issue Tracker Reporting Guidelines & Requirements](https://github.com/Yellow-Dog-Man/Resonite-Issues/?tab=readme-ov-file#reporting-requirements).";
                         }
                     } catch (e) {
                         coreExports.warning(`Unable to download some of the logs, results may be incomplete: ${e.message}`);
