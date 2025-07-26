@@ -202,7 +202,7 @@ function isValidResoniteLog(logContent) {
 }
 
 
-module.exports = {
+export default {
     isValidResoniteLog,
     parseResoniteLogContent,
     getSystemSummary,
