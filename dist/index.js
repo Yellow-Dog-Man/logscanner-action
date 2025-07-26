@@ -50435,8 +50435,13 @@ async function run() {
                         });
 
                         let parsedLog = parseResoniteLogContent(response.data);
+                        let systemSummary = getSystemSummary(parsedLog);
 
-                        message += getSystemSummary(parsedLog);
+                        message += `Found logs for Resonite ${parsedLog.resoniteVersion}:\n- CPU: ${systemSummary.cpu}\n- GPU: ${systemSummary.gpu}\n- Headset: ${systemSummary.vrMode}\n`;
+
+                        if (systemSummary.modded) {
+                            message += "> [!CAUTION]\n> We have detected a mod loader and/or plug-ins being loaded additionally to the base game. Please provide clean logs without mods and/or plug-ins to avoid reporting issues related to those.";
+                        }
                     } catch (e) {
                         coreExports.warning(`Unable to download some of the logs, results may be incomplete: ${e.message}`);
                     }
