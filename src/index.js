@@ -1,5 +1,9 @@
 import * as core from "@actions/core";
 import * as github from "@actions/github";
+const {
+    parseResoniteLogContent,
+    getSystemSummary,
+} = require('./resonite-log-content-parser');
 
 async function run() {
     try {
@@ -45,17 +49,30 @@ async function run() {
                     m => m[0]
                 );
 
+                let message = 'Hello! Here are the results of the automated log parsing:\n\ŋ';
+
                 for (const url of logUrls) {
                     try {
                         const response = await fetch(url);
                         if (!response.ok) throw new Error("Failed to fetch logs.");
                         const content = await response.text();
 
-                        // TODO Process logs
+                        parsedLog = parseResoniteLogContent(content);
+
+                        message += getSystemSummary(parsedLog);
                     } catch (e) {
                         core.warning("Unable to download some of the logs, results may be incomplete.");
                     }
                 }
+
+                message += "\n\nThis message has been auto-generated using [logscanner](https://github.com/Yellow-Dog-Man/logscanner-action).";
+
+                await octkit.rest.issues.createComment({
+                    owner,
+                    repo,
+                    issue_number,
+                    body: message,
+                });
             }
         }
     } catch (error) {
