@@ -1,6 +1,6 @@
 import * as core from "@actions/core";
 import * as github from "@actions/github";
-import { parseResoniteLogContent, getSystemSummary } from './resonite-log-content-parser';
+import { parseResoniteLogContent, getSystemSummary } from 'resonite-log-content-parser';
 
 async function run() {
     try {
