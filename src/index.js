@@ -1,5 +1,7 @@
 import * as core from "@actions/core";
 import * as github from "@actions/github";
+import axios from 'axios';
+
 import { parseResoniteLogContent, getSystemSummary } from './logUtil';
 
 async function run() {
@@ -54,13 +56,13 @@ async function run() {
                     core.warning(`Download: ${url}`);
 
                     try {
-                        const response = await fetch(url);
-                        if (!response.ok) throw new Error("Failed to fetch logs.");
-                        const content = await response.text();
+                        const response = await axios.get(url);
 
-                        parsedLog = parseResoniteLogContent(content);
+                        core.warning(`response: ${response.status} ${response.data}`)
 
-                        message += getSystemSummary(parsedLog);
+                        // parsedLog = parseResoniteLogContent(content);
+
+                        // message += getSystemSummary(parsedLog);
                     } catch (e) {
                         core.warning(`Unable to download some of the logs, results may be incomplete: ${e.message}`);
                     }
