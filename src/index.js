@@ -62,7 +62,7 @@ async function run() {
 
                         message += getSystemSummary(parsedLog);
                     } catch (e) {
-                        core.warning("Unable to download some of the logs, results may be incomplete.");
+                        core.warning(`Unable to download some of the logs, results may be incomplete: ${e.message}`);
                     }
                 }
 

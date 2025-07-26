@@ -31489,7 +31489,7 @@ async function run() {
 
                         message += getSystemSummary(parsedLog);
                     } catch (e) {
-                        coreExports.warning("Unable to download some of the logs, results may be incomplete.");
+                        coreExports.warning(`Unable to download some of the logs, results may be incomplete: ${e.message}`);
                     }
                 }
 
