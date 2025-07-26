@@ -31469,7 +31469,7 @@ async function run() {
                 }
             } else {
                 const logUrls = Array.from(
-                    logField.matchAll(/https?:\/\/[^\s)]+?\.log\b/),
+                    logField.matchAll(/https?:\/\/[^\s)]+?\.log\b/gi),
                     m => m[0]
                 );
 
