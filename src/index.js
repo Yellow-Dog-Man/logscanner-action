@@ -46,7 +46,9 @@ async function run() {
                     m => m[0]
                 );
 
-                let message = 'Hello! Here are the results of the automated log parsing:\n\ŋ';
+                let message = 'Hello! Here are the results of the automated log parsing:\n\n';
+
+                core.warning(logUrls);
 
                 for (const url of logUrls) {
                     core.warning(`Download: ${url}`);
