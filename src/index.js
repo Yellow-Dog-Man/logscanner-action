@@ -50,11 +50,7 @@ async function run() {
 
                 let message = 'Hello! Here are the results of the automated log parsing:\n\n';
 
-                core.warning(logUrls);
-
                 for (const url of logUrls) {
-                    core.warning(`Download: ${url}`);
-
                     try {
                         const response = await axios.get(url, {
                             headers: {
@@ -64,9 +60,9 @@ async function run() {
 
                         core.warning(`response: ${response.status} ${response.data}`)
 
-                        // parsedLog = parseResoniteLogContent(content);
+                        parsedLog = parseResoniteLogContent(content);
 
-                        // message += getSystemSummary(parsedLog);
+                        message += getSystemSummary(parsedLog);
                     } catch (e) {
                         core.warning(`Unable to download some of the logs, results may be incomplete: ${e.message}`);
                     }
