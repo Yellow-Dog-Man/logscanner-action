@@ -49,6 +49,8 @@ async function run() {
                 let message = 'Hello! Here are the results of the automated log parsing:\n\ŋ';
 
                 for (const url of logUrls) {
+                    core.warning(`Download: ${url}`);
+
                     try {
                         const response = await fetch(url);
                         if (!response.ok) throw new Error("Failed to fetch logs.");
