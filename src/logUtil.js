@@ -145,7 +145,7 @@ function checkModLoader(logContent) {
 }
 
 
-function parseResoniteLogContent(logContent) {
+export function parseResoniteLogContent(logContent) {
     if (typeof logContent !== 'string') {
         throw new Error('Log content must be a string');
     }
@@ -175,7 +175,7 @@ function isVRMode(headset) {
 }
 
 
-function getSystemSummary(parsedData) {
+export function getSystemSummary(parsedData) {
     return {
         cpu: parsedData.pcSpecs.cpu || 'Unknown',
         gpu: parsedData.pcSpecs.gpu || 'Unknown',
@@ -186,7 +186,7 @@ function getSystemSummary(parsedData) {
     };
 }
 
-function isValidResoniteLog(logContent) {
+export function isValidResoniteLog(logContent) {
     if (typeof logContent !== 'string' || !logContent.trim()) {
         return false;
     }
@@ -200,10 +200,3 @@ function isValidResoniteLog(logContent) {
     
     return indicators.some(indicator => logContent.includes(indicator));
 }
-
-
-export default {
-    isValidResoniteLog,
-    parseResoniteLogContent,
-    getSystemSummary,
-};
