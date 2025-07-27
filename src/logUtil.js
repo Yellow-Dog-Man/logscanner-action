@@ -129,7 +129,7 @@ function checkModLoader(logContent) {
     let version = '';
 
     for (const line of lines) {
-        if (line.includes('Loaded Extra Assembly') && line.includes('ResoniteModLoader.dll')) {
+        if (line.includes('Loaded Extra Assembly')) {
             isLoaded = true;
         }
 
