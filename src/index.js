@@ -140,7 +140,7 @@ function formatMarkdownMessage(data) {
         return resultsTable(data);
     } else {
         const res = Array.isArray(data) ? data[0] : data;
-        return singleResult(data);
+        return singleResult(res);
     }
 }
 
