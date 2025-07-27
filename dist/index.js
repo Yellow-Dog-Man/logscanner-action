@@ -50363,6 +50363,21 @@ function parseResoniteLogContent(logContent) {
     };
 }
 
+function isValidResoniteLog(logContent) {
+    if (typeof logContent !== 'string' || !logContent.trim()) {
+        return false;
+    }
+    
+    const indicators = [
+        'FrooxEngine',
+        'Resonite',
+        'Initializing App:',
+        'Engine Runner'
+    ];
+    
+    return indicators.some(indicator => logContent.includes(indicator));
+}
+
 async function run() {
     try {
         const token = coreExports.getInput("github-token", { required: true });
@@ -50419,8 +50434,16 @@ async function run() {
                                 Authorization: `Bearer ${token}`
                             }
                         });
+                        let logData = response.data;
 
-                        let parsedLog = parseResoniteLogContent(response.data);
+                        // We need this in case someone sends crash logs
+                        // player.log and others aren't supported by the
+                        // parser at the moment
+                        if (!isValidResoniteLog(logData)) {
+                            continue;
+                        }
+
+                        let parsedLog = parseResoniteLogContent(logData);
 
                         if (parsedLog.modLoader.isLoaded)
                             isModded = true;
