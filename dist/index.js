@@ -50323,7 +50323,7 @@ function checkModLoader(logContent) {
     let version = '';
 
     for (const line of lines) {
-        if (line.includes('Loaded Extra Assembly') && line.includes('ResoniteModLoader.dll')) {
+        if (line.includes('Loaded Extra Assembly')) {
             isLoaded = true;
         }
 
@@ -50361,11 +50361,6 @@ function parseResoniteLogContent(logContent) {
             version: modLoader.version
         }
     };
-}
-
-
-function isVRMode(headset) {
-    return headset && !headset.includes('Screen');
 }
 
 async function run() {
@@ -50414,6 +50409,8 @@ async function run() {
 
                 let message = 'Hello! Here are the results of the automated log parsing:\n\n';
 
+                let logData = [];
+
                 for (const url of logUrls) {
                     try {
                         const response = await axios.get(url, {
@@ -50423,19 +50420,22 @@ async function run() {
                         });
 
                         let parsedLog = parseResoniteLogContent(response.data);
-                        let vrMode = isVRMode(parsedLog.headset);
 
-                        message += `Found logs for Resonite ${parsedLog.resoniteVersion}:\n- OS: ${parsedLog.operatingSystem}\n- CPU: ${parsedLog.pcSpecs.cpu}\n- GPU: ${parsedLog.pcSpecs.gpu}\n- Memory: ${parsedLog.pcSpecs.memory}\n- VRAM: ${parsedLog.pcSpecs.vram}\n- Headset: ${vrMode}\n`;
+                        logData.push(parsedLog);
 
-                        if (parsedLog.modLoader.isLoaded) {
-                            message += "> [!CAUTION]\n> We have detected a mod loader and/or plug-ins being loaded additionally to the base game.\n> Please provide clean logs without mods and/or plug-ins to avoid reporting issues related to those.\n> If you have any questions about how we process reports, please see the [Resonite Issue Tracker Reporting Guidelines & Requirements](https://github.com/Yellow-Dog-Man/Resonite-Issues/?tab=readme-ov-file#reporting-requirements).";
-                        }
+//                        message += `Found logs for Resonite ${parsedLog.resoniteVersion}:\n- OS: ${parsedLog.operatingSystem}\n- CPU: ${parsedLog.pcSpecs.cpu}\n- GPU: ${parsedLog.pcSpecs.gpu}\n- Memory: ${parsedLog.pcSpecs.memory}\n- VRAM: ${parsedLog.pcSpecs.vram}\n- Headset: ${parsedLog.headset}\n`;
+
+//                        if (parsedLog.modLoader.isLoaded) {
+//                            message += "> [!CAUTION]\n> We have detected a mod loader and/or plug-ins being loaded additionally to the base game.\n> Please provide clean logs without mods and/or plug-ins to avoid reporting issues related to those.\n> If you have any questions about how we process reports, please see the [Resonite Issue Tracker Reporting Guidelines & Requirements](https://github.com/Yellow-Dog-Man/Resonite-Issues/?tab=readme-ov-file#reporting-requirements).";
+//                        }
                     } catch (e) {
                         coreExports.warning(`Unable to download some of the logs, results may be incomplete: ${e.message}`);
                     }
                 }
 
-                message += "\n\nThis message has been auto-generated using [logscanner](https://github.com/Yellow-Dog-Man/logscanner-action).";
+                message += formatMarkdownMessage(logData);
+
+                message += "\n\n---\nThis message has been auto-generated using [logscanner](https://github.com/Yellow-Dog-Man/logscanner-action).";
 
                 await octkit.rest.issues.createComment({
                     owner,
@@ -50447,6 +50447,49 @@ async function run() {
         }
     } catch (error) {
         coreExports.setFailed(error.message);
+    }
+}
+
+function formatMarkdownMessage(data) {
+    function singleResult (res) {
+        return [
+            `- Version: ${res.resoniteVersion}`,
+            `- OS: ${res.operatingSystem}`,
+            `- CPU: ${res.pcSpecs.cpu}`,
+            `- GPU: ${res.pcSpecs.gpu}`,
+            `- VRAM: ${res.pcSpecs.vram}`,
+            `- RAM: ${res.pcSpecs.memory}`,
+            `- Headset: ${res.pcSpecs.headset}`,
+        ];
+    }
+
+    function resultsTable (res) {
+        const headers = ["Version", "OS", "CPU", "GPU", "VRAM", "RAM", "Headset"];
+
+        const rows = res.map(r => [
+            r.resoniteVersion,
+            r.operatingSystem,
+            r.pcSpecs.cpu,
+            r.pcSpecs.gpu,
+            r.pcSpecs.vram,
+            r.pcSpecs.memory,
+            r.pcSpecs.headset,
+        ]);
+
+        let md = `| ${ headers.join(" | ") } |\n`;
+        md += `| ${ headers.map(() => "---").join(" | ") } |\n`;
+
+        for (const row of rows) {
+            md += `| ${ row.join(" | ") } |\n`;
+        }
+
+        return md;
+    }
+
+    if (Array.isArray(data) && data.length > 1) {
+        return resultsTable(data);
+    } else {
+        return singleResult(data);
     }
 }
 
