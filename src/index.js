@@ -62,7 +62,10 @@ async function run() {
                         });
 
                         let parsedLog = parseResoniteLogContent(response.data);
-                        isModded = parsedLog.modLoader.isLoaded;
+
+                        if (parsedLog.modLoader.isLoaded)
+                            isModded = true;
+
                         logData.push(parsedLog);
                     } catch (e) {
                         core.warning(`Unable to download some of the logs, results may be incomplete: ${e.message}`);
