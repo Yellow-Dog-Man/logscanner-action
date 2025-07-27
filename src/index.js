@@ -114,7 +114,7 @@ function formatMarkdownMessage(data) {
     }
 
     function resultsTable (res) {
-        const headers = ["Version", "OS", "CPU", "GPU", "VRAM", "RAM", "Headset"];
+        const headers = ["Version", "OS", "CPU", "GPU", "VRAM", "RAM", "Headset", "Mods"];
 
         const rows = res.map(r => [
             r.resoniteVersion,
@@ -124,6 +124,7 @@ function formatMarkdownMessage(data) {
             r.pcSpecs.vram,
             r.pcSpecs.memory,
             r.headset,
+            r.modLoader.isLoaded ? "❌" : "✅",
         ]);
 
         let md = `| ${ headers.join(" | ") } |\n`;
