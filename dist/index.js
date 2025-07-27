@@ -50421,14 +50421,11 @@ async function run() {
                         });
 
                         let parsedLog = parseResoniteLogContent(response.data);
-                        isModded = parsedLog.modLoader.isLoaded;
+
+                        if (parsedLog.modLoader.isLoaded)
+                            isModded = true;
+
                         logData.push(parsedLog);
-
-//                        message += `Found logs for Resonite ${parsedLog.resoniteVersion}:\n- OS: ${parsedLog.operatingSystem}\n- CPU: ${parsedLog.pcSpecs.cpu}\n- GPU: ${parsedLog.pcSpecs.gpu}\n- Memory: ${parsedLog.pcSpecs.memory}\n- VRAM: ${parsedLog.pcSpecs.vram}\n- Headset: ${parsedLog.headset}\n`;
-
-//                        if (parsedLog.modLoader.isLoaded) {
-//                            message += "> [!CAUTION]\n> We have detected a mod loader and/or plug-ins being loaded additionally to the base game.\n> Please provide clean logs without mods and/or plug-ins to avoid reporting issues related to those.\n> If you have any questions about how we process reports, please see the [Resonite Issue Tracker Reporting Guidelines & Requirements](https://github.com/Yellow-Dog-Man/Resonite-Issues/?tab=readme-ov-file#reporting-requirements).";
-//                        }
                     } catch (e) {
                         coreExports.warning(`Unable to download some of the logs, results may be incomplete: ${e.message}`);
                     }
