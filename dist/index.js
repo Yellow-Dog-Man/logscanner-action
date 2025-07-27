@@ -50410,6 +50410,7 @@ async function run() {
                 let message = 'Hello! Here are the results of the automated log parsing:\n\n';
 
                 let logData = [];
+                let isModded = false;
 
                 for (const url of logUrls) {
                     try {
@@ -50420,7 +50421,7 @@ async function run() {
                         });
 
                         let parsedLog = parseResoniteLogContent(response.data);
-
+                        isModded = parsedLog.modLoader.isLoaded;
                         logData.push(parsedLog);
 
 //                        message += `Found logs for Resonite ${parsedLog.resoniteVersion}:\n- OS: ${parsedLog.operatingSystem}\n- CPU: ${parsedLog.pcSpecs.cpu}\n- GPU: ${parsedLog.pcSpecs.gpu}\n- Memory: ${parsedLog.pcSpecs.memory}\n- VRAM: ${parsedLog.pcSpecs.vram}\n- Headset: ${parsedLog.headset}\n`;
@@ -50434,6 +50435,14 @@ async function run() {
                 }
 
                 message += formatMarkdownMessage(logData);
+
+                // This is very ugly but can't do any other way for now
+                if (isModded) {
+                    message += `[!CAUTION]
+                    > We have detected a mod loader and/or plug-ins being loaded additionally to the base game.
+                    > Please provide clean logs without mods and/or plug-ins to avoid reporting issues related to those.
+                    > If you have any questions about how we process reports, please see the [Resonite Issue Tracker Reporting Guidelines & Requirements](https://github.com/Yellow-Dog-Man/Resonite-Issues/?tab=readme-ov-file#reporting-requirements).`;
+                }
 
                 message += "\n\n---\nThis message has been auto-generated using [logscanner](https://github.com/Yellow-Dog-Man/logscanner-action).";
 
@@ -50473,7 +50482,7 @@ function formatMarkdownMessage(data) {
             r.pcSpecs.gpu,
             r.pcSpecs.vram,
             r.pcSpecs.memory,
-            r.pcSpecs.headset,
+            r.headset,
         ]);
 
         let md = `| ${ headers.join(" | ") } |\n`;
