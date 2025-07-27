@@ -50498,7 +50498,8 @@ function formatMarkdownMessage(data) {
     if (Array.isArray(data) && data.length > 1) {
         return resultsTable(data);
     } else {
-        return singleResult(data);
+        const res = Array.isArray(data) ? data[0] : data;
+        return singleResult(res);
     }
 }
 
