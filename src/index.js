@@ -110,7 +110,7 @@ function formatMarkdownMessage(data) {
             `- VRAM: ${res.pcSpecs.vram}`,
             `- RAM: ${res.pcSpecs.memory}`,
             `- Headset: ${res.pcSpecs.headset}`,
-        ];
+        ].join("\n");
     }
 
     function resultsTable (res) {
