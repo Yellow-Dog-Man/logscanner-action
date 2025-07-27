@@ -50439,9 +50439,9 @@ async function run() {
                 // This is very ugly but can't do any other way for now
                 if (isModded) {
                     message += `\n\n> [!CAUTION]
-                > We have detected a mod loader and/or plug-ins being loaded additionally to the base game.
-                > Please provide clean logs without mods and/or plug-ins to avoid reporting issues related to those.
-                > If you have any questions about how we process reports, please see the [Resonite Issue Tracker Reporting Guidelines & Requirements](https://github.com/Yellow-Dog-Man/Resonite-Issues/?tab=readme-ov-file#reporting-requirements).`;
+                We have detected a mod loader and/or plug-ins being loaded additionally to the base game.
+                Please provide clean logs without mods and/or plug-ins to avoid reporting issues related to those.
+                If you have any questions about how we process reports, please see the [Resonite Issue Tracker Reporting Guidelines & Requirements](https://github.com/Yellow-Dog-Man/Resonite-Issues/?tab=readme-ov-file#reporting-requirements).`;
                 }
 
                 message += "\n\n---\nThis message has been auto-generated using [logscanner](https://github.com/Yellow-Dog-Man/logscanner-action).";
