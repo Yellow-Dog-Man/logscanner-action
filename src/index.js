@@ -2,7 +2,7 @@ import * as core from "@actions/core";
 import * as github from "@actions/github";
 import axios from 'axios';
 
-import { parseResoniteLogContent, isVRMode } from './logUtil';
+import { parseResoniteLogContent, isValidResoniteLog } from './logUtil';
 
 async function run() {
     try {
@@ -60,8 +60,16 @@ async function run() {
                                 Authorization: `Bearer ${token}`
                             }
                         });
+                        let logData = response.data;
 
-                        let parsedLog = parseResoniteLogContent(response.data);
+                        // We need this in case someone sends crash logs
+                        // player.log and others aren't supported by the
+                        // parser at the moment
+                        if (!isValidResoniteLog(logData)) {
+                            continue;
+                        }
+
+                        let parsedLog = parseResoniteLogContent(logData);
 
                         if (parsedLog.modLoader.isLoaded)
                             isModded = true;
