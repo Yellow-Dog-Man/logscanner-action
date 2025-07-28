@@ -50338,6 +50338,7 @@ function checkModLoader(logContent) {
     return { isLoaded, version };
 }
 
+/// TODO: implement check for clean exit
 
 function parseResoniteLogContent(logContent) {
     if (typeof logContent !== 'string') {
@@ -50434,16 +50435,16 @@ async function run() {
                                 Authorization: `Bearer ${token}`
                             }
                         });
-                        let logData = response.data;
+                        let logContent = response.data;
 
                         // We need this in case someone sends crash logs
                         // player.log and others aren't supported by the
                         // parser at the moment
-                        if (!isValidResoniteLog(logData)) {
+                        if (!isValidResoniteLog(logContent)) {
                             continue;
                         }
 
-                        let parsedLog = parseResoniteLogContent(logData);
+                        let parsedLog = parseResoniteLogContent(logContent);
 
                         if (parsedLog.modLoader.isLoaded)
                             isModded = true;
@@ -50481,18 +50482,6 @@ async function run() {
 }
 
 function formatMarkdownMessage(data) {
-    function singleResult (res) {
-        return [
-            `- Version: ${res.resoniteVersion}`,
-            `- OS: ${res.operatingSystem}`,
-            `- CPU: ${res.pcSpecs.cpu}`,
-            `- GPU: ${res.pcSpecs.gpu}`,
-            `- VRAM: ${res.pcSpecs.vram}`,
-            `- RAM: ${res.pcSpecs.memory}`,
-            `- Headset: ${res.pcSpecs.headset}`,
-        ].join("\n");
-    }
-
     function resultsTable (res) {
         const headers = ["Version", "OS", "CPU", "GPU", "VRAM", "RAM", "Headset", "Mods"];
 
@@ -50517,12 +50506,11 @@ function formatMarkdownMessage(data) {
         return md;
     }
 
-    if (Array.isArray(data) && data.length > 1) {
-        return resultsTable(data);
-    } else {
-        const res = Array.isArray(data) ? data[0] : data;
-        return singleResult(res);
+    if (!Array.isArray(data)) {
+        data = [data];
     }
+
+    return resultsTable(data);
 }
 
 run();
