@@ -60,16 +60,16 @@ async function run() {
                                 Authorization: `Bearer ${token}`
                             }
                         });
-                        let logData = response.data;
+                        let logContent = response.data;
 
                         // We need this in case someone sends crash logs
                         // player.log and others aren't supported by the
                         // parser at the moment
-                        if (!isValidResoniteLog(logData)) {
+                        if (!isValidResoniteLog(logContent)) {
                             continue;
                         }
 
-                        let parsedLog = parseResoniteLogContent(logData);
+                        let parsedLog = parseResoniteLogContent(logContent);
 
                         if (parsedLog.modLoader.isLoaded)
                             isModded = true;
