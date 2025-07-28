@@ -144,6 +144,13 @@ function checkModLoader(logContent) {
     return { isLoaded, version };
 }
 
+function checkForCleanExit(logContent) {
+    const lines = logContent.split('\n');
+    
+    let isClean = lines.at(-1) === "<<< LOG END >>>";
+
+    return isClean;
+}
 
 export function parseResoniteLogContent(logContent) {
     if (typeof logContent !== 'string') {
@@ -162,6 +169,7 @@ export function parseResoniteLogContent(logContent) {
         headset: extractHeadset(logContent),
         operatingSystem: extractOperatingSystem(logContent),
         resoniteVersion: extractResoniteVersion(logContent),
+        cleanExit: checkForCleanExit(logContent),
         modLoader: {
             isLoaded: modLoader.isLoaded,
             version: modLoader.version
