@@ -81,7 +81,7 @@ function extractHeadset(logContent) {
             }
         }
 
-        if (!!headset || headset === "")
+        if (!headset || headset === "")
             headset = "Headless Server Software";
     }
 
