@@ -80,6 +80,9 @@ function extractHeadset(logContent) {
                 headset += ` - ${xrModelMatch[1].trim()}`;
             }
         }
+
+        if (!!headset || headset === "")
+            headset = "Headless Server Software";
     }
 
     return headset;
