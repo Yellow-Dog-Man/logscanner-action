@@ -50339,11 +50339,7 @@ function checkModLoader(logContent) {
 }
 
 function checkForCleanExit(logContent) {
-    const lines = logContent.split('\n');
-    
-    let isClean = lines.at(-1) === "<<< LOG END >>>";
-
-    return isClean;
+    return logContent.includes("<<< LOG END >>>");
 }
 
 function parseResoniteLogContent(logContent) {
