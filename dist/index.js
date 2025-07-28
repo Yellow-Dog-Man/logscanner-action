@@ -50338,7 +50338,13 @@ function checkModLoader(logContent) {
     return { isLoaded, version };
 }
 
-/// TODO: implement check for clean exit
+function checkForCleanExit(logContent) {
+    const lines = logContent.split('\n');
+    
+    let isClean = lines.at(-1) === "<<< LOG END >>>";
+
+    return isClean;
+}
 
 function parseResoniteLogContent(logContent) {
     if (typeof logContent !== 'string') {
@@ -50357,6 +50363,7 @@ function parseResoniteLogContent(logContent) {
         headset: extractHeadset(logContent),
         operatingSystem: extractOperatingSystem(logContent),
         resoniteVersion: extractResoniteVersion(logContent),
+        cleanExit: checkForCleanExit(logContent),
         modLoader: {
             isLoaded: modLoader.isLoaded,
             version: modLoader.version
@@ -50483,7 +50490,7 @@ async function run() {
 
 function formatMarkdownMessage(data) {
     function resultsTable (res) {
-        const headers = ["Version", "OS", "CPU", "GPU", "VRAM", "RAM", "Headset", "Mods"];
+        const headers = ["Version", "OS", "CPU", "GPU", "VRAM", "RAM", "Headset", "Mods", "Clean Exit"];
 
         const rows = res.map(r => [
             r.resoniteVersion,
@@ -50494,6 +50501,7 @@ function formatMarkdownMessage(data) {
             r.pcSpecs.memory,
             r.headset,
             r.modLoader.isLoaded ? "❌" : "✅",
+            r.cleanExit ? "✅" : "❌",
         ]);
 
         let md = `| ${ headers.join(" | ") } |\n`;
