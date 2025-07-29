@@ -50287,8 +50287,8 @@ function extractOperatingSystem(logContent) {
     let os = '';
 
     for (const line of lines) {
-        if (line.includes('OS: ')) {
-            const osMatch = line.match(/OS: (.+?)$/);
+        if (line.includes('Detected Wine version: ')) {
+            const osMatch = line.match(/Detected Wine version: (.+?)$/);
             if (osMatch) {
                 os = osMatch[1].trim();
             }
