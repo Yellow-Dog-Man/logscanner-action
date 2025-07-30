@@ -1,5 +1,3 @@
-import * as core from "@actions/core";
-
 function extractPCSpecs(logContent) {
     const lines = logContent.split('\n');
     const specs = {};
@@ -104,7 +102,6 @@ function extractOperatingSystem(logContent) {
 
         if (line.includes('Detected Wine version: ')) {
             const wineMatch = line.match(/Detected Wine version: (.+?)\s*$/);
-            core.info(`Detected wine: ${wineMatch}`);
             if (wineMatch) {
                 os += ` (via Wine ${wineMatch[1].trim()})`;
             }
