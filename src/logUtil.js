@@ -188,7 +188,8 @@ export function isValidResoniteLog(logContent) {
     
     const indicators = [
         'FrooxEngine',
-        'Resonite',
+        'DataPath',
+        'CachePath',
         'Initializing App:',
         'Engine Runner'
     ];
