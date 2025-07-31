@@ -50368,8 +50368,6 @@ function parseResoniteLogContent(logContent) {
 
     const plugins = checkForPlugins(logContent);
 
-    coreExports.info(plugins);
-
     return {
         pcSpecs: extractPCSpecs(logContent),
         commandLineFlags: extractCommandLineFlags(logContent),
@@ -50467,7 +50465,7 @@ async function run() {
 
                         let parsedLog = parseResoniteLogContent(logContent);
 
-                        if (parsedLog.modLoader.isLoaded)
+                        if (parsedLog.plugins.isLoaded)
                             isModded = true;
 
                         logData.push(parsedLog);
