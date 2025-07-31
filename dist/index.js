@@ -50499,7 +50499,7 @@ function formatMarkdownMessage(data) {
             r.pcSpecs.vram,
             r.pcSpecs.memory,
             r.headset,
-            r.modLoader.isLoaded ? "❌" : "✅",
+            r.modLoader.isLoaded ? "No" : "Yes",
             r.cleanExit ? "✅" : "❌",
         ]);
 
