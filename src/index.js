@@ -71,7 +71,7 @@ async function run() {
 
                         let parsedLog = parseResoniteLogContent(logContent);
 
-                        if (parsedLog.modLoader.isLoaded)
+                        if (parsedLog.plugins.isLoaded)
                             isModded = true;
 
                         logData.push(parsedLog);
