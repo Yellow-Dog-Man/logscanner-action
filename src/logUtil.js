@@ -182,8 +182,8 @@ export function parseResoniteLogContent(logContent) {
         resoniteVersion: extractResoniteVersion(logContent),
         cleanExit: checkForCleanExit(logContent),
         plugins: {
-            isLoaded: modLoader.isLoaded,
-            modLoader: modLoader,
+            isLoaded: plugins.isLoaded,
+            modLoader: plugins.modLoader,
         }
     };
 }
