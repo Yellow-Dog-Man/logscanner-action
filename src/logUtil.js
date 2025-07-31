@@ -1,3 +1,5 @@
+import * as core from "@actions/core";
+
 function extractPCSpecs(logContent) {
     const lines = logContent.split('\n');
     const specs = {};
@@ -174,6 +176,8 @@ export function parseResoniteLogContent(logContent) {
 
     const plugins = checkForPlugins(logContent);
 
+    core.info(plugins);
+
     return {
         pcSpecs: extractPCSpecs(logContent),
         commandLineFlags: extractCommandLineFlags(logContent),
@@ -183,7 +187,7 @@ export function parseResoniteLogContent(logContent) {
         cleanExit: checkForCleanExit(logContent),
         plugins: {
             isLoaded: plugins.isLoaded,
-            modLoader: plugins.modLoader,
+            modLoader: plugins.modLoader
         }
     };
 }
