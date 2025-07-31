@@ -50366,7 +50366,7 @@ function parseResoniteLogContent(logContent) {
         throw new Error('Log content cannot be empty');
     }
 
-    checkForPlugins(logContent);
+    const plugins = checkForPlugins(logContent);
 
     return {
         pcSpecs: extractPCSpecs(logContent),
@@ -50376,8 +50376,8 @@ function parseResoniteLogContent(logContent) {
         resoniteVersion: extractResoniteVersion(logContent),
         cleanExit: checkForCleanExit(logContent),
         plugins: {
-            isLoaded: modLoader.isLoaded,
-            modLoader: modLoader,
+            isLoaded: plugins.isLoaded,
+            modLoader: plugins.modLoader,
         }
     };
 }
