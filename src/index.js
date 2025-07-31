@@ -80,7 +80,11 @@ async function run() {
                     }
                 }
 
-                message += formatMarkdownMessage(logData);
+                if (logData.length != 0) {
+                    message += formatMarkdownMessage(logData);
+                } else {
+                    message += "No log data could be parsed.";
+                }
 
                 // This is very ugly but can't do any other way for now
                 if (isModded) {
