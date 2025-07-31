@@ -126,25 +126,37 @@ function extractResoniteVersion(logContent) {
     return '';
 }
 
-function checkModLoader(logContent) {
+function checkForPlugins(logContent) {
     const lines = logContent.split('\n');
     let isLoaded = false;
-    let version = '';
+    let modLoader = '';
 
     for (const line of lines) {
+        // Plug-ins
         if (line.includes('Loaded Extra Assembly')) {
             isLoaded = true;
         }
 
+        // RML
+        // Also counts as a plug-in, but better to double check
         if (line.includes('[INFO] [ResoniteModLoader] ResoniteModLoader v')) {
+            modLoader = "ResoniteModLoader";
+            isLoaded = true;
             const versionMatch = line.match(/ResoniteModLoader v([0-9.]+)/);
             if (versionMatch) {
-                version = versionMatch[1];
+                const rmlVersion = versionMatch[1];
+                modLoader += ` ${rmlVersion}`;
             }
+        }
+
+        // MonkeyLoader
+        if (line.includes('[INFO]  [MonkeyLoader]')) {
+            isLoaded = true;
+            modLoader = "MonkeyLoader";
         }
     }
 
-    return { isLoaded, version };
+    return { isLoaded, modLoader };
 }
 
 function checkForCleanExit(logContent) {
@@ -160,7 +172,7 @@ export function parseResoniteLogContent(logContent) {
         throw new Error('Log content cannot be empty');
     }
 
-    const modLoader = checkModLoader(logContent);
+    const plugins = checkForPlugins(logContent);
 
     return {
         pcSpecs: extractPCSpecs(logContent),
@@ -169,9 +181,9 @@ export function parseResoniteLogContent(logContent) {
         operatingSystem: extractOperatingSystem(logContent),
         resoniteVersion: extractResoniteVersion(logContent),
         cleanExit: checkForCleanExit(logContent),
-        modLoader: {
+        plugins: {
             isLoaded: modLoader.isLoaded,
-            version: modLoader.version
+            modLoader: modLoader,
         }
     };
 }

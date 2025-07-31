@@ -112,7 +112,7 @@ async function run() {
 
 function formatMarkdownMessage(data) {
     function resultsTable (res) {
-        const headers = ["Version", "OS", "CPU", "GPU", "VRAM", "RAM", "Headset", "Mods", "Clean Exit"];
+        const headers = ["Version", "OS", "CPU", "GPU", "VRAM", "RAM", "Headset", "Plug-ins/Mods", "Clean Exit"];
 
         const rows = res.map(r => [
             r.resoniteVersion,
@@ -122,7 +122,7 @@ function formatMarkdownMessage(data) {
             r.pcSpecs.vram,
             r.pcSpecs.memory,
             r.headset,
-            r.modLoader.isLoaded ? "Yes" : "no",
+            r.plugins.isLoaded ? `Yes ${ r.plugins.modLoader === null ? "" : `(${ r.plugins.modLoader })` }` : "no",
             r.cleanExit ? "✅" : "❌",
         ]);
 
