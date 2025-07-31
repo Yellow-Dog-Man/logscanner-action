@@ -50368,6 +50368,8 @@ function parseResoniteLogContent(logContent) {
 
     const plugins = checkForPlugins(logContent);
 
+    coreExports.info(plugins);
+
     return {
         pcSpecs: extractPCSpecs(logContent),
         commandLineFlags: extractCommandLineFlags(logContent),
@@ -50377,7 +50379,7 @@ function parseResoniteLogContent(logContent) {
         cleanExit: checkForCleanExit(logContent),
         plugins: {
             isLoaded: plugins.isLoaded,
-            modLoader: plugins.modLoader,
+            modLoader: plugins.modLoader
         }
     };
 }
