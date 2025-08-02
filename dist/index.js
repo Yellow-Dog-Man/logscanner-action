@@ -50344,7 +50344,7 @@ function checkForPlugins(logContent) {
         }
 
         // MonkeyLoader
-        if (line.includes('[INFO]  [MonkeyLoader]')) {
+        if (line.match(/\[(?:WARN\]\s+\[MonkeyLoader(?:\|[^\]]+)*|INFO\]\s+\[MonkeyLoader)\]/)) {
             isLoaded = true;
             modLoader = "MonkeyLoader";
         }
