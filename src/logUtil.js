@@ -163,6 +163,31 @@ function checkForCleanExit(logContent) {
     return logContent.includes("<<< LOG END >>>");
 }
 
+function getCurrentRenderer(logContent) {
+    const lines = logContent.split('\n');
+    var rendererFound = false;
+    var currentRenderer = "None";
+    var isOfficial = false;
+
+    for (const line of lines) {
+        if (line.includes("Renderer:")) {
+            rendererFound = true;
+
+            currentRenderer = line.match(/Renderer:\s*([^,]+)/)[1];
+        }
+    }
+
+    if (currentRenderer.includes("Renderite.Renderer.Unity")) {
+        isOfficial = true;
+    }
+
+    return {
+        rendererFound,
+        currentRenderer,
+        isOfficial,
+    }
+}
+
 export function parseResoniteLogContent(logContent) {
     if (typeof logContent !== 'string') {
         throw new Error('Log content must be a string');
@@ -173,6 +198,7 @@ export function parseResoniteLogContent(logContent) {
     }
 
     const plugins = checkForPlugins(logContent);
+    const rendererInfo = getCurrentRenderer(logContent);
 
     return {
         pcSpecs: extractPCSpecs(logContent),
@@ -183,7 +209,12 @@ export function parseResoniteLogContent(logContent) {
         cleanExit: checkForCleanExit(logContent),
         plugins: {
             isLoaded: plugins.isLoaded,
-            modLoader: plugins.modLoader
+            modLoader: plugins.modLoader,
+        },
+        renderer: {
+            found: rendererInfo.rendererFound,
+            name: rendererInfo.currentRenderer,
+            official: rendererInfo.isOfficial,
         }
     };
 }
