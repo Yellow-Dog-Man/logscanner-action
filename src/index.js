@@ -52,6 +52,7 @@ async function run() {
 
                 let logData = [];
                 let isModded = false;
+                let unofficialRenderer = false;
 
                 for (const url of logUrls) {
                     try {
@@ -74,6 +75,9 @@ async function run() {
                         if (parsedLog.plugins.isLoaded)
                             isModded = true;
 
+                        if (parsedLog.renderer.found && !parsedLog.renderer.official)
+                            unofficialRenderer = true;
+
                         logData.push(parsedLog);
                     } catch (e) {
                         core.warning(`Unable to download some of the logs, results may be incomplete: ${e.message}`);
@@ -95,6 +99,15 @@ async function run() {
                 If you need additional help with your report, you are also welcome to [join our community on Discord](https://discord.gg/resonite).`;
                 }
 
+                // Ugly as well
+                if (unofficialRenderer) {
+                    message += `\n\n> [!CAUTION]
+                    It seems your logs indicate you are using a third-party renderer.
+                    Please reproduce the issue you are reporting using the supported official Unity Renderite renderer as custom ones cannot be officially supported.
+                    If you have any questions about how we process reports, please see the [Resonite Issue Tracker Reporting Guidelines & Requirements](https://github.com/Yellow-Dog-Man/Resonite-Issues/?tab=readme-ov-file#reporting-requirements).
+                    If you need additional help with your report, you are also welcome to [join our community on Discord](https://discord.gg/resonite).`;
+                }
+
                 message += "\n\n---\nThis message has been auto-generated using [logscanner](https://github.com/Yellow-Dog-Man/logscanner-action).";
 
                 await octkit.rest.issues.createComment({
@@ -112,7 +125,7 @@ async function run() {
 
 function formatMarkdownMessage(data) {
     function resultsTable (res) {
-        const headers = ["Version", "OS", "CPU", "GPU", "VRAM", "RAM", "Headset", "Plug-ins/Mods", "Clean Exit"];
+        const headers = ["Version", "OS", "CPU", "GPU", "VRAM", "RAM", "Headset", "Plug-ins/Mods", "Renderer", "Clean Exit"];
 
         const rows = res.map(r => [
             r.resoniteVersion,
@@ -123,6 +136,7 @@ function formatMarkdownMessage(data) {
             r.pcSpecs.memory,
             r.headset,
             r.plugins.isLoaded ? `Yes ${ r.plugins.modLoader === null ? "" : `(${ r.plugins.modLoader })` }` : "no",
+            r.renderer.name,
             r.cleanExit ? "✅" : "❌",
         ]);
 
