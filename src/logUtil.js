@@ -64,6 +64,16 @@ function extractHeadset(lines) {
             }
         }
 
+        // Just in case, try for second method
+        if (!headset || headset === "") {
+            if (line.includes('ActualOutputDevice: ')) {
+                const headDeviceMatch = line.match(/ActualOutputDevice:\s*([^,]+)/);
+                if (headDeviceMatch) {
+                    headset = headDeviceMatch[1].trim();
+                }
+            }
+        }
+
         if (line.includes('XR Device Name: ')) {
             const xrNameMatch = line.match(/XR Device Name: (.+?)$/);
             if (xrNameMatch && xrNameMatch[1].trim()) {
