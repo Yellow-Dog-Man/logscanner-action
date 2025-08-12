@@ -57,7 +57,7 @@ function extractHeadset(lines) {
     let headset = '';
 
     for (const line of lines) {
-        if (line.includes('HeadDevice: ')) {
+        if (line.includes('HeadOutputDevice: ')) {
             const headDeviceMatch = line.match(/HeadDevice: (.+?)$/);
             if (headDeviceMatch) {
                 headset = headDeviceMatch[1].trim();
