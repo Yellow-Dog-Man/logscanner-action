@@ -50192,8 +50192,7 @@ const {
   mergeConfig
 } = axios;
 
-function extractPCSpecs(logContent) {
-    const lines = logContent.split('\n');
+function extractPCSpecs(lines) {
     const specs = {};
 
     for (const line of lines) {
@@ -50236,8 +50235,7 @@ function extractPCSpecs(logContent) {
     return specs;
 }
 
-function extractCommandLineFlags(logContent) {
-    const lines = logContent.split('\n');
+function extractCommandLineFlags(lines) {
     const flags = [];
 
     for (const line of lines) {
@@ -50249,8 +50247,7 @@ function extractCommandLineFlags(logContent) {
     return flags.length > 0 ? flags : [];
 }
 
-function extractHeadset(logContent) {
-    const lines = logContent.split('\n');
+function extractHeadset(lines) {
     let headset = '';
 
     for (const line of lines) {
@@ -50282,8 +50279,7 @@ function extractHeadset(logContent) {
     return headset;
 }
 
-function extractOperatingSystem(logContent) {
-    const lines = logContent.split('\n');
+function extractOperatingSystem(lines) {
     let os = '';
 
     for (const line of lines) {
@@ -50305,9 +50301,7 @@ function extractOperatingSystem(logContent) {
     return os;
 }
 
-function extractResoniteVersion(logContent) {
-    const lines = logContent.split('\n');
-
+function extractResoniteVersion(lines) {
     for (const line of lines) {
         if (line.includes('Initializing App: ')) {
             const versionMatch = line.match(/Initializing App: (.+?)$/);
@@ -50320,8 +50314,7 @@ function extractResoniteVersion(logContent) {
     return '';
 }
 
-function checkForPlugins(logContent) {
-    const lines = logContent.split('\n');
+function checkForPlugins(lines) {
     let isLoaded = false;
     let modLoader = '';
 
@@ -50357,8 +50350,7 @@ function checkForCleanExit(logContent) {
     return logContent.includes("<<< LOG END >>>");
 }
 
-function getCurrentRenderer(logContent) {
-    const lines = logContent.split('\n');
+function getCurrentRenderer(lines) {
     var rendererFound = false;
     var currentRenderer = "None";
     var isOfficial = false;
@@ -50391,15 +50383,17 @@ function parseResoniteLogContent(logContent) {
         throw new Error('Log content cannot be empty');
     }
 
-    const plugins = checkForPlugins(logContent);
-    const rendererInfo = getCurrentRenderer(logContent);
+    const lines = logContent.split("\n");
+
+    const plugins = checkForPlugins(lines);
+    const rendererInfo = getCurrentRenderer(lines);
 
     return {
-        pcSpecs: extractPCSpecs(logContent),
-        commandLineFlags: extractCommandLineFlags(logContent),
-        headset: extractHeadset(logContent),
-        operatingSystem: extractOperatingSystem(logContent),
-        resoniteVersion: extractResoniteVersion(logContent),
+        pcSpecs: extractPCSpecs(lines),
+        commandLineFlags: extractCommandLineFlags(lines),
+        headset: extractHeadset(lines),
+        operatingSystem: extractOperatingSystem(lines),
+        resoniteVersion: extractResoniteVersion(lines),
         cleanExit: checkForCleanExit(logContent),
         plugins: {
             isLoaded: plugins.isLoaded,
