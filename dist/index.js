@@ -50372,6 +50372,8 @@ function getCurrentRenderer(lines) {
 
     if (rendererFound && currentRenderer.includes("Renderite.Renderer.Unity")) {
         isOfficial = true;
+    } else if (!rendererFound) {
+        isOfficial = true; // supress warning
     }
 
     return {
