@@ -176,7 +176,7 @@ function getCurrentRenderer(lines) {
         }
     }
 
-    if (currentRenderer.includes("Renderite.Renderer.Unity")) {
+    if (rendererFound && currentRenderer.includes("Renderite.Renderer.Unity")) {
         isOfficial = true;
     }
 
