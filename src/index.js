@@ -56,7 +56,7 @@ async function run() {
 
                 for (const url of logUrls) {
                     if (!url.startsWith('https://github.com/user-attachments/files/'))
-                        return;
+                        continue;
 
                     try {
                         const response = await axios.get(url, {
