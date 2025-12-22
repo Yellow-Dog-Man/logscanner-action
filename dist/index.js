@@ -50483,6 +50483,9 @@ async function run() {
                 let unofficialRenderer = false;
 
                 for (const url of logUrls) {
+                    if (!url.startsWith('https://github.com/user-attachments/files/'))
+                        return;
+
                     try {
                         const response = await axios.get(url, {
                             headers: {
