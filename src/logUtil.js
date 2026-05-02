@@ -158,6 +158,12 @@ function checkForPlugins(lines) {
       isLoaded = true;
       modLoader = "MonkeyLoader";
     }
+
+    // BepisLoader
+    if (line.match(/\[BepisLoader(?:\|[^\]]+)*|INFO\]\s+\[BepisLoader)\]/)) {
+      isLoaded = true;
+      modLoader = "BepisLoader";
+    }
   }
 
   return { isLoaded, modLoader };
