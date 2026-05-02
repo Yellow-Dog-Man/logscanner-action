@@ -34,15 +34,14 @@ jobs:
       - lint-action
 
     permissions:
-      contents: write
+      contents: read
       packages: write
+      id-token: write
 
     steps:
       - name: "Checkout repository"
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
-      - name: "Install dependencies"
-        run: npm ci
-
-      - name: "Build dist package"
-        run: npm run dist
+      - name: Publish
+        id: publish
+        uses: actions/publish-immutable-action@4bc8754ffc40f27910afb20287dbbbb675a4e978 # v0.0.4
