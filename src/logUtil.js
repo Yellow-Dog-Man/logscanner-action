@@ -1,244 +1,247 @@
 function extractPCSpecs(lines) {
-    const specs = {};
+  const specs = {};
 
-    for (const line of lines) {
-        if (line.includes('CPU: ')) {
-            const cpuMatch = line.match(/CPU: (.+?)$/);
-            if (cpuMatch) {
-                specs.cpu = cpuMatch[1].trim();
-            }
-        }
-
-        if (line.includes('GPU: ')) {
-            const gpuMatch = line.match(/GPU: (.+?)$/);
-            if (gpuMatch) {
-                specs.gpu = gpuMatch[1].trim();
-            }
-        }
-
-        if (line.includes('MemoryBytes: ')) {
-            const memoryMatch = line.match(/MemoryBytes: (.+?)$/);
-            if (memoryMatch) {
-                specs.memory = memoryMatch[1].trim();
-            }
-        }
-
-        if (line.includes('VRAMBytes: ')) {
-            const vramMatch = line.match(/VRAMBytes: (.+?)$/);
-            if (vramMatch) {
-                specs.vram = vramMatch[1].trim();
-            }
-        }
-
-        if (line.includes('PhysicalCores: ')) {
-            const coresMatch = line.match(/PhysicalCores: (.+?)$/);
-            if (coresMatch && coresMatch[1].trim()) {
-                specs.physicalCores = coresMatch[1].trim();
-            }
-        }
+  for (const line of lines) {
+    if (line.includes("CPU: ")) {
+      const cpuMatch = line.match(/CPU: (.+?)$/);
+      if (cpuMatch) {
+        specs.cpu = cpuMatch[1].trim();
+      }
     }
 
-    return specs;
+    if (line.includes("GPU: ")) {
+      const gpuMatch = line.match(/GPU: (.+?)$/);
+      if (gpuMatch) {
+        specs.gpu = gpuMatch[1].trim();
+      }
+    }
+
+    if (line.includes("MemoryBytes: ")) {
+      const memoryMatch = line.match(/MemoryBytes: (.+?)$/);
+      if (memoryMatch) {
+        specs.memory = memoryMatch[1].trim();
+      }
+    }
+
+    if (line.includes("VRAMBytes: ")) {
+      const vramMatch = line.match(/VRAMBytes: (.+?)$/);
+      if (vramMatch) {
+        specs.vram = vramMatch[1].trim();
+      }
+    }
+
+    if (line.includes("PhysicalCores: ")) {
+      const coresMatch = line.match(/PhysicalCores: (.+?)$/);
+      if (coresMatch && coresMatch[1].trim()) {
+        specs.physicalCores = coresMatch[1].trim();
+      }
+    }
+  }
+
+  return specs;
 }
 
 function extractCommandLineFlags(lines) {
-    const flags = [];
+  const flags = [];
 
-    for (const line of lines) {
-        if (line.includes('[4] Processing startup commands...')) {
-            flags.push('No specific command line flags detected');
-        }
+  for (const line of lines) {
+    if (line.includes("[4] Processing startup commands...")) {
+      flags.push("No specific command line flags detected");
     }
+  }
 
-    return flags.length > 0 ? flags : [];
+  return flags.length > 0 ? flags : [];
 }
 
 function extractHeadset(lines) {
-    let headset = '';
+  let headset = "";
 
-    for (const line of lines) {
-        if (line.includes('HeadOutputDevice: ')) {
-            const headDeviceMatch = line.match(/HeadDevice: (.+?)$/);
-            if (headDeviceMatch) {
-                headset = headDeviceMatch[1].trim();
-            }
-        }
-
-        // Just in case, try for second method
-        if (!headset || headset === "") {
-            if (line.includes('ActualOutputDevice: ')) {
-                const headDeviceMatch = line.match(/ActualOutputDevice:\s*([^,]+)/);
-                if (headDeviceMatch) {
-                    headset = headDeviceMatch[1].trim();
-                }
-            }
-        }
-
-        if (line.includes('XR Device Name: ')) {
-            const xrNameMatch = line.match(/XR Device Name: (.+?)$/);
-            if (xrNameMatch && xrNameMatch[1].trim()) {
-                headset += ` (XR: ${xrNameMatch[1].trim()})`;
-            }
-        }
-
-        if (line.includes('XR Device Model: ')) {
-            const xrModelMatch = line.match(/XR Device Model: (.+?)$/);
-            if (xrModelMatch && xrModelMatch[1].trim()) {
-                headset += ` - ${xrModelMatch[1].trim()}`;
-            }
-        }
+  for (const line of lines) {
+    if (line.includes("HeadOutputDevice: ")) {
+      const headDeviceMatch = line.match(/HeadDevice: (.+?)$/);
+      if (headDeviceMatch) {
+        headset = headDeviceMatch[1].trim();
+      }
     }
 
-    return headset;
+    // Just in case, try for second method
+    if (!headset || headset === "") {
+      if (line.includes("ActualOutputDevice: ")) {
+        const headDeviceMatch = line.match(/ActualOutputDevice:\s*([^,]+)/);
+        if (headDeviceMatch) {
+          headset = headDeviceMatch[1].trim();
+        }
+      }
+    }
+
+    if (line.includes("XR Device Name: ")) {
+      const xrNameMatch = line.match(/XR Device Name: (.+?)$/);
+      if (xrNameMatch && xrNameMatch[1].trim()) {
+        headset += ` (XR: ${xrNameMatch[1].trim()})`;
+      }
+    }
+
+    if (line.includes("XR Device Model: ")) {
+      const xrModelMatch = line.match(/XR Device Model: (.+?)$/);
+      if (xrModelMatch && xrModelMatch[1].trim()) {
+        headset += ` - ${xrModelMatch[1].trim()}`;
+      }
+    }
+  }
+
+  return headset;
 }
 
 function extractOperatingSystem(lines) {
-    let os = '';
+  let os = "";
 
-    for (const line of lines) {
-        if (line.includes('OS: ')) {
-            const osMatch = line.match(/OS: (.+?)$/);
-            if (osMatch) {
-                os = osMatch[1].trim();
-            }
-        }
-
-        if (line.includes('Detected Wine version: ')) {
-            const wineMatch = line.match(/Detected Wine version: (.+?)\s*$/);
-            if (wineMatch) {
-                os += ` (via Wine ${wineMatch[1].trim()})`;
-            }
-        }
+  for (const line of lines) {
+    if (line.includes("OS: ")) {
+      const osMatch = line.match(/OS: (.+?)$/);
+      if (osMatch) {
+        os = osMatch[1].trim();
+      }
     }
 
-    return os;
+    if (line.includes("Detected Wine version: ")) {
+      const wineMatch = line.match(/Detected Wine version: (.+?)\s*$/);
+      if (wineMatch) {
+        os += ` (via Wine ${wineMatch[1].trim()})`;
+      }
+    }
+  }
+
+  return os;
 }
 
 function extractResoniteVersion(lines) {
-    for (const line of lines) {
-        if (line.includes('Initializing App: ')) {
-            const versionMatch = line.match(/Initializing App: (.+?)$/);
-            if (versionMatch) {
-                return versionMatch[1].trim();
-            }
-        }
+  for (const line of lines) {
+    if (line.includes("Initializing App: ")) {
+      const versionMatch = line.match(/Initializing App: (.+?)$/);
+      if (versionMatch) {
+        return versionMatch[1].trim();
+      }
     }
+  }
 
-    return '';
+  return "";
 }
 
 function checkForPlugins(lines) {
-    let isLoaded = false;
-    let modLoader = '';
+  let isLoaded = false;
+  let modLoader = "";
 
-    for (const line of lines) {
-        // Plug-ins
-        if (line.includes('Loaded Extra Assembly')) {
-            isLoaded = true;
-        }
-
-        // RML
-        // Also counts as a plug-in, but better to double check
-        if (line.includes('[INFO] [ResoniteModLoader] ResoniteModLoader v')) {
-            modLoader = "ResoniteModLoader";
-            isLoaded = true;
-            const versionMatch = line.match(/ResoniteModLoader v([0-9.]+)/);
-            if (versionMatch) {
-                const rmlVersion = versionMatch[1];
-                modLoader += ` ${rmlVersion}`;
-            }
-        }
-
-        // MonkeyLoader
-        if (line.match(/\[(?:WARN\]\s+\[MonkeyLoader(?:\|[^\]]+)*|INFO\]\s+\[MonkeyLoader)\]/)) {
-            isLoaded = true;
-            modLoader = "MonkeyLoader";
-        }
+  for (const line of lines) {
+    // Plug-ins
+    if (line.includes("Loaded Extra Assembly")) {
+      isLoaded = true;
     }
 
-    return { isLoaded, modLoader };
+    // RML
+    // Also counts as a plug-in, but better to double check
+    if (line.includes("[INFO] [ResoniteModLoader] ResoniteModLoader v")) {
+      modLoader = "ResoniteModLoader";
+      isLoaded = true;
+      const versionMatch = line.match(/ResoniteModLoader v([0-9.]+)/);
+      if (versionMatch) {
+        const rmlVersion = versionMatch[1];
+        modLoader += ` ${rmlVersion}`;
+      }
+    }
+
+    // MonkeyLoader
+    if (
+      line.match(
+        /\[(?:WARN\]\s+\[MonkeyLoader(?:\|[^\]]+)*|INFO\]\s+\[MonkeyLoader)\]/,
+      )
+    ) {
+      isLoaded = true;
+      modLoader = "MonkeyLoader";
+    }
+  }
+
+  return { isLoaded, modLoader };
 }
 
 function checkForCleanExit(logContent) {
-    return logContent.includes("<<< LOG END >>>");
+  return logContent.includes("<<< LOG END >>>");
 }
 
 function getCurrentRenderer(lines) {
-    var rendererFound = false;
-    var currentRenderer = "None";
-    var isOfficial = false;
+  var rendererFound = false;
+  var currentRenderer = "None";
+  var isOfficial = false;
 
-    for (const line of lines) {
-        if (line.includes("Renderer:")) {
-            rendererFound = true;
+  for (const line of lines) {
+    if (line.includes("Renderer:")) {
+      rendererFound = true;
 
-            currentRenderer = line.match(/Renderer:\s*([^,]+)/)[1];
-        }
+      currentRenderer = line.match(/Renderer:\s*([^,]+)/)[1];
     }
+  }
 
-    if (rendererFound && currentRenderer.includes("Renderite.Renderer.Unity")) {
-        isOfficial = true;
-    } else if (!rendererFound) {
-        isOfficial = true; // supress warning
-    }
+  if (rendererFound && currentRenderer.includes("Renderite.Renderer.Unity")) {
+    isOfficial = true;
+  } else if (!rendererFound) {
+    isOfficial = true; // supress warning
+  }
 
-    return {
-        rendererFound,
-        currentRenderer,
-        isOfficial,
-    }
+  return {
+    rendererFound,
+    currentRenderer,
+    isOfficial,
+  };
 }
 
 export function parseResoniteLogContent(logContent) {
-    if (typeof logContent !== 'string') {
-        throw new Error('Log content must be a string');
-    }
+  if (typeof logContent !== "string") {
+    throw new Error("Log content must be a string");
+  }
 
-    if (!logContent.trim()) {
-        throw new Error('Log content cannot be empty');
-    }
+  if (!logContent.trim()) {
+    throw new Error("Log content cannot be empty");
+  }
 
-    const lines = logContent.split("\n");
+  const lines = logContent.split("\n");
 
-    const plugins = checkForPlugins(lines);
-    const rendererInfo = getCurrentRenderer(lines);
+  const plugins = checkForPlugins(lines);
+  const rendererInfo = getCurrentRenderer(lines);
 
-    return {
-        pcSpecs: extractPCSpecs(lines),
-        commandLineFlags: extractCommandLineFlags(lines),
-        headset: extractHeadset(lines),
-        operatingSystem: extractOperatingSystem(lines),
-        resoniteVersion: extractResoniteVersion(lines),
-        cleanExit: checkForCleanExit(logContent),
-        plugins: {
-            isLoaded: plugins.isLoaded,
-            modLoader: plugins.modLoader,
-        },
-        renderer: {
-            found: rendererInfo.rendererFound,
-            name: rendererInfo.currentRenderer,
-            official: rendererInfo.isOfficial,
-        }
-    };
+  return {
+    pcSpecs: extractPCSpecs(lines),
+    commandLineFlags: extractCommandLineFlags(lines),
+    headset: extractHeadset(lines),
+    operatingSystem: extractOperatingSystem(lines),
+    resoniteVersion: extractResoniteVersion(lines),
+    cleanExit: checkForCleanExit(logContent),
+    plugins: {
+      isLoaded: plugins.isLoaded,
+      modLoader: plugins.modLoader,
+    },
+    renderer: {
+      found: rendererInfo.rendererFound,
+      name: rendererInfo.currentRenderer,
+      official: rendererInfo.isOfficial,
+    },
+  };
 }
 
-
 export function isVRMode(headset) {
-    return headset && !headset.includes('Screen');
+  return headset && !headset.includes("Screen");
 }
 
 export function isValidResoniteLog(logContent) {
-    if (typeof logContent !== 'string' || !logContent.trim()) {
-        return false;
-    }
-    
-    const indicators = [
-        'FrooxEngine',
-        'DataPath',
-        'CachePath',
-        'Initializing App:',
-        'Engine Runner'
-    ];
-    
-    return indicators.some(indicator => logContent.includes(indicator));
+  if (typeof logContent !== "string" || !logContent.trim()) {
+    return false;
+  }
+
+  const indicators = [
+    "FrooxEngine",
+    "DataPath",
+    "CachePath",
+    "Initializing App:",
+    "Engine Runner",
+  ];
+
+  return indicators.some((indicator) => logContent.includes(indicator));
 }
