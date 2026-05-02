@@ -28,7 +28,7 @@ jobs:
     name: "Create release from tag"
     runs-on: ubuntu-slim
 
-    if: ${{ github.event == 'release' && github.event.action == 'published' }}
+    if: ${{ github.event_name == 'release' && github.event.action == 'published' }}
 
     needs:
       - lint-action
