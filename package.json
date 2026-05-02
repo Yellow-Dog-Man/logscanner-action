@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "build": "rollup --config rollup.config.js",
-    "lint": "eslint"
+    "lint": "eslint src/**/*.js"
   },
   "repository": {
     "type": "git",

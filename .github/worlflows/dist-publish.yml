@@ -1,0 +1,45 @@
+name: "Publish Action on tag creation"
+
+on:
+  push:
+  release:
+    types:
+      - published
+
+jobs:
+  lint-action:
+    name: "Lint Action for syntax"
+    runs-on: ubuntu-slim
+
+    steps:
+      - name: "Checkout repository"
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: "Install dependencies"
+        run: npm ci
+
+      - name: "Run linting"
+        run: npm run lint
+
+  tag-release:
+    name: "Create release from tag"
+    runs-on: ubuntu-slim
+
+    if: ${{ github.event == 'release' && github.event.action == 'published' }}
+
+    needs:
+      - lint-action
+
+    permissions:
+      contents: write
+      packages: write
+
+    steps:
+      - name: "Checkout repository"
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: "Install dependencies"
+        run: npm ci
+
+      - name: "Build dist package"
+        run: npm run dist
