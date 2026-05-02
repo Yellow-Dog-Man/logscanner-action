@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "build": "rollup --config rollup.config.js"
+    "build": "rollup --config rollup.config.js",
+    "lint": "eslint"
   },
   "repository": {
     "type": "git",
@@ -24,9 +25,12 @@
     "axios": "^1.11.0"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@rollup/plugin-commonjs": "^28.0.6",
     "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^16.0.1",
+    "eslint": "^10.3.0",
+    "globals": "^17.6.0",
     "rollup": "^4.45.1"
   }
 }

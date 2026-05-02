@@ -160,7 +160,7 @@ function checkForPlugins(lines) {
     }
 
     // BepisLoader
-    if (line.match(/\[BepisLoader(?:\|[^\]]+)*|INFO\]\s+\[BepisLoader)\]/)) {
+    if (line.match(/BepInExResoniteShim/)) {
       isLoaded = true;
       modLoader = "BepisLoader";
     }
