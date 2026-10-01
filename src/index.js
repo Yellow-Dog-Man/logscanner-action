@@ -59,9 +59,16 @@ async function run() {
         let isModded = false;
         let unofficialRenderer = false;
 
+        const allowedLogUrlPrefixes = [
+          "https://github.com/user-attachments/files/",
+          "https://blob.feedback.resonite.com/",
+        ];
+
         for (const url of logUrls) {
-          if (!url.startsWith("https://github.com/user-attachments/files/"))
-            continue;
+          const isAllowed = allowedLogUrlPrefixes.some((prefix) =>
+            url.startsWith(prefix)
+          );
+          if (!isAllowed) continue;
 
           try {
             const response = await axios.get(url, {
